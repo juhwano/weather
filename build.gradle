@@ -1,23 +1,17 @@
+import jdk.internal.dynalink.linker.LinkerServices
+
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '2.6.6'
-	id 'io.spring.dependency-management' version '1.1.6'
+	id 'org.springframework.boot' version '2.6.6' // Spring Boot 2.6.6 유지
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE' // 호환성 높은 버전
 }
 
 group = 'zerobase'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_1_8
-//	toolchain {
-//		languageVersion = JavaLanguageVersion.of(17)
-//	}
-}
-
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+	sourceCompatibility = JavaVersion.VERSION_1_8 // Java 1.8 설정
+	targetCompatibility = JavaVersion.VERSION_1_8 // Java 1.8 설정
 }
 
 repositories {
@@ -26,10 +20,14 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	runtimeOnly 'mysql:mysql-connector-java' // MySQL JDBC 드라이버
+
+	compileOnly 'org.projectlombok:lombok' // Lombok 의존성
 	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test' // 테스트 의존성
 }
 
 tasks.named('test') {

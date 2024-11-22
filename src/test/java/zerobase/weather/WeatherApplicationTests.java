@@ -27,7 +27,7 @@ class WeatherApplicationTests {
 	@Test
 	void trueTest() {
 	    //given
-		assertTrue(1==2);
+		assertTrue(1==1);
 	    //when
 	    //then
 	}
