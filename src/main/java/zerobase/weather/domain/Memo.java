@@ -14,9 +14,9 @@ import javax.persistence.Id;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name="memo")
+@Entity(name="memo") // 테이블 지정
 public class Memo {
-    @Id
+    @Id // PK 지정
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String text;
