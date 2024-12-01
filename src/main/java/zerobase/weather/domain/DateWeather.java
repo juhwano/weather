@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class DateWeather {
     @Id
-    private LocalDate Date;
+    private LocalDate date;
     private String weather;
     private String icon;
     private double temperature;

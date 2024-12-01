@@ -4,11 +4,14 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import zerobase.weather.WeatherApplication;
 import zerobase.weather.domain.DateWeather;
 import zerobase.weather.domain.Diary;
 import zerobase.weather.repository.DateWeatherRepository;
@@ -32,6 +35,8 @@ public class DiaryService {
 
     private final DiaryRepository diaryRepository;
     private final DateWeatherRepository dateWeatherRepository;
+    // 프로젝트 전체에서 1개의 로거만 사용
+    private static final Logger logger = LoggerFactory.getLogger(WeatherApplication.class);
 
     public DiaryService(DiaryRepository diaryRepository, DateWeatherRepository dateWeatherRepository) {
         this.diaryRepository = diaryRepository;
@@ -46,6 +51,7 @@ public class DiaryService {
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public void createDiary(LocalDate date, String text) {
+        logger.info("started to create diary");
         // 1. OpenWeatherMap에서 날씨 데이터 받아오기
 //        String weatherData = getWeatherString();
         // 2. 받아온 날씨 데이터(json) 파싱
@@ -62,6 +68,7 @@ public class DiaryService {
         nowDiary.setText(text);
 
         diaryRepository.save(nowDiary);
+        logger.info("finished to create diary");
     }
 
     private DateWeather getWeatherFromApi() {
@@ -83,7 +90,7 @@ public class DiaryService {
         // 사용자 입력 날짜 존재 여부
         List<DateWeather> dateWeatherListFromDB = dateWeatherRepository.findAllByDate(date);
 
-        if (dateWeatherListFromDB.size() == 0) {
+        if (dateWeatherListFromDB.isEmpty()) {
             // API에서 새로 날씨 정보 가져오기
             // 과거데이터(5일 이전)는 유료 -> 정책상 현재 날씨 또는 날씨없이 일기를 쓰도록
             return getWeatherFromApi();
@@ -95,6 +102,7 @@ public class DiaryService {
 
     @Transactional(readOnly = true)
     public List<Diary> readDiary(LocalDate date) {
+        logger.debug("readDiary");
         return diaryRepository.findAllByDate(date);
     }
 

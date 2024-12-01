@@ -26,7 +26,7 @@ class JpaMemoRepositoryTest {
         jpaMemoRepository.save(newMemo);
         //then
         List<Memo> memoList = jpaMemoRepository.findAll();
-        assertTrue(memoList.size() > 0);
+        assertTrue(memoList.isEmpty());
     }
 
     @Test
@@ -37,7 +37,12 @@ class JpaMemoRepositoryTest {
         Memo memo = jpaMemoRepository.save(newMemo);
         //then
         Optional<Memo> result = jpaMemoRepository.findById(memo.getId());
-        assertEquals(result.get().getText(), "jpa");
+        if (result.isPresent()) {
+            assertEquals(result.get().getText(), "jpa");
+        } else {
+            fail("Expected value but found empty Optional");
+        }
+
     }
 
 }
