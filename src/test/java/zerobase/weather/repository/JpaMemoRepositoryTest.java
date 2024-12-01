@@ -12,7 +12,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@Transactional
+@Transactional // Test Code는 모두 roll back 처리
 class JpaMemoRepositoryTest {
 
     @Autowired
