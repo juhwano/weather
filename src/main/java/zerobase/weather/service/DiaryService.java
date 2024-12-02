@@ -102,7 +102,6 @@ public class DiaryService {
 
     @Transactional(readOnly = true)
     public List<Diary> readDiary(LocalDate date) {
-        logger.debug("readDiary");
         return diaryRepository.findAllByDate(date);
     }
 
